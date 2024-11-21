@@ -1,7 +1,15 @@
 import numpy as np
-from functions import relu
+import utilis.activation_function as af
+# Create an instance of ActivationSigmoid
+sigmoid_activation = af.ActivationSigmoid()
 
-# Example usage
-x = np.array([-1, 0, 1, 2])
-y = relu(x)
-print(x)  # Output: [0 0 1 2]
+# Define some input data
+input_data = np.array([0.5, -0.5, 1.0, -1.0])
+
+# Compute the sigmoid activation
+sigmoid_output = sigmoid_activation.sigmoid(input_data)
+print("Sigmoid Output:", sigmoid_output)
+
+# Compute the derivative of the sigmoid activation
+sigmoid_derivative = sigmoid_activation.derivative(input_data)
+print("Sigmoid Derivative:", sigmoid_derivative)
