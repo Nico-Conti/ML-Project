@@ -17,4 +17,4 @@ class ActivationFunction:
 
     @staticmethod
     def relu_derivative(x):
-        return np.where(x > 0, 1, 1)
+        return np.where(x > 0, 1, 0)
