@@ -1,15 +1,38 @@
-import numpy as np
-import utilis.activation_function as af
-# Create an instance of ActivationSigmoid
-sigmoid_activation = af.ActivationSigmoid()
+# src/neural_network.py
+from sgd import SGD
 
-# Define some input data
-input_data = np.array([0.5, -0.5, 1.0, -1.0])
 
-# Compute the sigmoid activation
-sigmoid_output = sigmoid_activation.sigmoid(input_data)
-print("Sigmoid Output:", sigmoid_output)
+class NeuralNetwork:
+    def __init__(self):
+        self.layers = []
 
-# Compute the derivative of the sigmoid activation
-sigmoid_derivative = sigmoid_activation.derivative(input_data)
-print("Sigmoid Derivative:", sigmoid_derivative)
+    def add(self, layer):
+        self.layers.append(layer)
+
+    def forward(self, inputs):
+        for layer in self.layers:
+            inputs = layer.forward(inputs)
+        return inputs
+
+    def backward(self, dvalues):
+        for layer in reversed(self.layers):
+            dvalues = layer.backward(dvalues)
+
+    def train(self, X, y, epochs, optimizer, loss_function):
+        for epoch in range(epochs):
+            # Forward pass
+            output = self.forward(X)
+
+            # Compute loss
+            loss = loss_function.function(y, output)
+
+            # Backward pass
+            dvalues = loss_function.derivative(y, output)
+            self.backward(dvalues)
+
+            # Update parameters
+            for layer in self.layers:
+                optimizer.update_params(layer)
+
+            # Print epoch results
+            print(f'Epoch {epoch + 1}/{epochs}, Loss: {loss:.4f}')
